@@ -34,7 +34,7 @@ catch {
         Write-Host "- Verifique que el token tenga permisos 'repo'." -ForegroundColor Yellow
     }
     elseif ($_.Exception.Message -match "404") {
-        Write-Host "- Archivo no encontrado: cs/launchers/runmax.ps" -ForegroundColor Yellow
+        Write-Host "- Archivo no encontrado: chicagocs/launchers/rundnsmax.ps" -ForegroundColor Yellow
         Write-Host "- Verifique que el archivo existe en el repositorio." -ForegroundColor Yellow
     }
     else {
@@ -47,4 +47,5 @@ catch {
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     exit 1
 }
+
 
