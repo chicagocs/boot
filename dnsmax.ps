@@ -3,15 +3,15 @@
 
 # Limpia toda la información de la pantalla de la consola.
 Clear-Host
-Write-Host "=== Bootstrap dnsMax ===" -ForegroundColor Green
+Write-Host " === Bootstrap dnsMax ===" -ForegroundColor Green
 Write-Host ""
 
 # Solicitar token de forma segura
-$token = Read-Host " Ingrese token" -AsSecureString
+$token = Read-Host " Ingrese token" -AsSecureString -ForegroundColor Green
 $tokenPlain = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($token))
 
 Write-Host ""
-Write-Host " Descargando launcher desde repositorio ..." -ForegroundColor Yellow
+Write-Host " Descargando launcher desde repositorio ..." -ForegroundColor Green
 
 try {
     # Descargar el launcher desde el repositorio privado
@@ -50,6 +50,7 @@ catch {
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     exit 1
 }
+
 
 
 
