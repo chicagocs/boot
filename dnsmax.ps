@@ -5,11 +5,11 @@ Write-Host "=== Bootstrap dnsMax ===" -ForegroundColor Cyan
 Write-Host ""
 
 # Solicitar token de forma segura
-$token = Read-Host "Ingrese token de GitHub" -AsSecureString
+$token = Read-Host "Ingrese token" -AsSecureString
 $tokenPlain = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($token))
 
 Write-Host ""
-Write-Host "Descargando launcher desde repositorio privado..." -ForegroundColor Yellow
+Write-Host "Descargando launcher desde repositorio ..." -ForegroundColor Yellow
 
 try {
     # Descargar el launcher desde el repositorio privado
@@ -18,7 +18,8 @@ try {
     # Decodificar el contenido base64
     $launcherContent = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($response.content))
     
-    Write-Host "Launcher descargado. Ejecutando..." -ForegroundColor Green
+    Write-Host "Launcher descargado." -ForegroundColor Green
+    Write-Host "Ejecutando ..." -ForegroundColor Green
     Write-Host ""
     
     # Ejecutar el launcher
@@ -35,7 +36,7 @@ catch {
     }
     elseif ($_.Exception.Message -match "404") {
         Write-Host "- Archivo no encontrado: chicagocs/launchers/dnsmax.ps" -ForegroundColor Yellow
-        Write-Host "- Verifique que el archivo existe en el repositorio." -ForegroundColor Yellow
+        Write-Host "- Verifique que el archivo existe en repositorio." -ForegroundColor Yellow
     }
     else {
         Write-Host "Detalles del error:" -ForegroundColor Yellow
@@ -47,6 +48,7 @@ catch {
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     exit 1
 }
+
 
 
 
