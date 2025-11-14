@@ -1,15 +1,17 @@
 # Bootstrap Loader dnsMax - Version 1.1
 # Solicita token de forma segura y ejecuta el launcher privado
 
-Write-Host "=== Bootstrap dnsMax ===" -ForegroundColor Cyan
+# Limpia toda la información de la pantalla de la consola.
+Clear-Host
+Write-Host "=== Bootstrap dnsMax ===" -ForegroundColor Green
 Write-Host ""
 
 # Solicitar token de forma segura
-$token = Read-Host "Ingrese token" -AsSecureString
+$token = Read-Host " Ingrese token" -AsSecureString
 $tokenPlain = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($token))
 
 Write-Host ""
-Write-Host "Descargando launcher desde repositorio ..." -ForegroundColor Yellow
+Write-Host " Descargando launcher desde repositorio ..." -ForegroundColor Yellow
 
 try {
     # Descargar el launcher desde el repositorio privado
@@ -18,8 +20,8 @@ try {
     # Decodificar el contenido base64
     $launcherContent = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($response.content))
     
-    Write-Host "Launcher descargado." -ForegroundColor Green
-    Write-Host "Ejecutando ..." -ForegroundColor Green
+    Write-Host " Launcher descargado." -ForegroundColor Green
+    Write-Host " Ejecutando ..." -ForegroundColor Green
     Write-Host ""
     
     # Ejecutar el launcher
@@ -27,7 +29,7 @@ try {
 }
 catch {
     Write-Host ""
-    Write-Host "ERROR: No se pudo descargar el launcher." -ForegroundColor Red
+    Write-Host " ERROR: No se pudo descargar el launcher." -ForegroundColor Red
     Write-Host ""
     
     if ($_.Exception.Message -match "401") {
@@ -39,15 +41,16 @@ catch {
         Write-Host "- Verifique que el archivo existe en repositorio." -ForegroundColor Yellow
     }
     else {
-        Write-Host "Detalles del error:" -ForegroundColor Yellow
+        Write-Host " Detalles del error: " -ForegroundColor Yellow
         Write-Host $_.Exception.Message -ForegroundColor Yellow
     }
     
     Write-Host ""
-    Write-Host "Presione cualquier tecla para salir..." -ForegroundColor Gray
+    Write-Host " Presione cualquier tecla para salir" -ForegroundColor Gray
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     exit 1
 }
+
 
 
 
