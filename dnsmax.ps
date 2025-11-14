@@ -13,7 +13,7 @@ Write-Host "Descargando launcher desde repositorio privado..." -ForegroundColor 
 
 try {
     # Descargar el launcher desde el repositorio privado
-    $response = Invoke-RestMethod -Uri "https://api.github.com/repos/chicagocs/launchers/contents/rundnsmax.ps" -Headers @{"Authorization"="token $tokenPlain"} -ErrorAction Stop
+    $response = Invoke-RestMethod -Uri "https://api.github.com/repos/chicagocs/launchers/contents/dnsmax.ps" -Headers @{"Authorization"="token $tokenPlain"} -ErrorAction Stop
     
     # Decodificar el contenido base64
     $launcherContent = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($response.content))
@@ -34,7 +34,7 @@ catch {
         Write-Host "- Verifique que el token tenga permisos 'repo'." -ForegroundColor Yellow
     }
     elseif ($_.Exception.Message -match "404") {
-        Write-Host "- Archivo no encontrado: chicagocs/launchers/rundnsmax.ps" -ForegroundColor Yellow
+        Write-Host "- Archivo no encontrado: chicagocs/launchers/dnsmax.ps" -ForegroundColor Yellow
         Write-Host "- Verifique que el archivo existe en el repositorio." -ForegroundColor Yellow
     }
     else {
@@ -47,5 +47,6 @@ catch {
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     exit 1
 }
+
 
 
