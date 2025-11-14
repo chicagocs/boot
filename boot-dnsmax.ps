@@ -13,7 +13,7 @@ Write-Host "Descargando launcher desde repositorio privado..." -ForegroundColor 
 
 try {
     # Descargar el launcher desde el repositorio privado
-    $response = Invoke-RestMethod -Uri "https://api.github.com/repos/cs/launchers/contents/runmax.ps" -Headers @{"Authorization"="token $tokenPlain"} -ErrorAction Stop
+    $response = Invoke-RestMethod -Uri "https://api.github.com/repos/chicagocs/launchers/contents/rundnsmax.ps" -Headers @{"Authorization"="token $tokenPlain"} -ErrorAction Stop
     
     # Decodificar el contenido base64
     $launcherContent = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($response.content))
@@ -47,3 +47,4 @@ catch {
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     exit 1
 }
+
