@@ -1,2 +1,16 @@
-# Bootstrap Loader - Version 1.0
-$t=Read-Host "Token" -AsSecureString;$p=[Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($t));iex([System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String((irm "https://api.github.com/repos/cs/launchers/contents/rundnsmax.ps" -Headers @{"Authorization"="token $p"}).content)))
+# Bootstrap Loader dnsMax - Version 1.0
+# Solicita token de forma segura y ejecuta el launcher privado
+
+$token = Read-Host "Ingrese token" -AsSecureString
+$tokenPlain = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($token))
+
+try {
+    $response = Invoke-RestMethod -Uri "https://api.github.com/repos/cs/launchers/contents/rundnsmax.ps" -Headers @{"Authorization"="token $tokenPlain"} -ErrorAction Stop
+    $launcherContent = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($response.content))
+    Invoke-Expression $launcherContent
+}
+catch {
+    Write-Host "Error: No se pudo descargar el launcher. Verifique el token." -ForegroundColor Red
+    Write-Host "Detalles: $($_.Exception.Message)" -ForegroundColor Yellow
+    exit 1
+}
