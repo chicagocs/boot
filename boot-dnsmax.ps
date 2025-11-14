@@ -1,16 +1,49 @@
-# Bootstrap Loader dnsMax - Version 1.0
+# Bootstrap Loader dnsMax - Version 1.1
 # Solicita token de forma segura y ejecuta el launcher privado
 
-$token = Read-Host "Ingrese token" -AsSecureString
+Write-Host "=== Bootstrap dnsMax ===" -ForegroundColor Cyan
+Write-Host ""
+
+# Solicitar token de forma segura
+$token = Read-Host "Ingrese token de GitHub" -AsSecureString
 $tokenPlain = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($token))
 
+Write-Host ""
+Write-Host "Descargando launcher desde repositorio privado..." -ForegroundColor Yellow
+
 try {
-    $response = Invoke-RestMethod -Uri "https://api.github.com/repos/cs/launchers/contents/rundnsmax.ps" -Headers @{"Authorization"="token $tokenPlain"} -ErrorAction Stop
+    # Descargar el launcher desde el repositorio privado
+    $response = Invoke-RestMethod -Uri "https://api.github.com/repos/cs/launchers/contents/runmax.ps" -Headers @{"Authorization"="token $tokenPlain"} -ErrorAction Stop
+    
+    # Decodificar el contenido base64
     $launcherContent = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($response.content))
+    
+    Write-Host "Launcher descargado. Ejecutando..." -ForegroundColor Green
+    Write-Host ""
+    
+    # Ejecutar el launcher
     Invoke-Expression $launcherContent
 }
 catch {
-    Write-Host "Error: No se pudo descargar el launcher. Verifique el token." -ForegroundColor Red
-    Write-Host "Detalles: $($_.Exception.Message)" -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "ERROR: No se pudo descargar el launcher." -ForegroundColor Red
+    Write-Host ""
+    
+    if ($_.Exception.Message -match "401") {
+        Write-Host "- Token invalido o sin permisos." -ForegroundColor Yellow
+        Write-Host "- Verifique que el token tenga permisos 'repo'." -ForegroundColor Yellow
+    }
+    elseif ($_.Exception.Message -match "404") {
+        Write-Host "- Archivo no encontrado: cs/launchers/runmax.ps" -ForegroundColor Yellow
+        Write-Host "- Verifique que el archivo existe en el repositorio." -ForegroundColor Yellow
+    }
+    else {
+        Write-Host "Detalles del error:" -ForegroundColor Yellow
+        Write-Host $_.Exception.Message -ForegroundColor Yellow
+    }
+    
+    Write-Host ""
+    Write-Host "Presione cualquier tecla para salir..." -ForegroundColor Gray
+    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     exit 1
 }
